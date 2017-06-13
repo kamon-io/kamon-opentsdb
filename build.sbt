@@ -14,8 +14,8 @@ import sbt.ExclusionRule
  * =========================================================================================
  */
 
-val kamonCore         = "io.kamon"                  %%  "kamon-core"            % "0.6.6"
-val opentsdb = "net.opentsdb" % "opentsdb" % "2.3.0" excludeAll(
+val kamonCore = "io.kamon"     %%  "kamon-core" % "0.6.7"
+val opentsdb  = "net.opentsdb" % "opentsdb"     % "2.3.0" excludeAll(
    ExclusionRule(organization = "ch.qos.logback"),
    ExclusionRule(organization = "com.google.gwt"),
    ExclusionRule(organization = "net.opentsdb", artifact = "opentsdb_gwt_theme"),
@@ -25,7 +25,6 @@ val opentsdb = "net.opentsdb" % "opentsdb" % "2.3.0" excludeAll(
 
 val hbase = "org.hbase" % "asynchbase" % "1.7.2"
 name := "kamon-opentsdb"
-isSnapshot := true
 parallelExecution in Test in Global := false
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
 
