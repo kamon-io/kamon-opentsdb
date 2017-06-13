@@ -202,4 +202,5 @@ kamon.opentsdb.stats.integral = "leider.ken.application.IntegralStat"
 kamon.opentsdb.counter.stats = [ count, rate, integral ]
 ```
 
+
 [OpenTSDB]: http://opentsdb.net/
