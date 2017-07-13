@@ -6,8 +6,8 @@ lazy val root = (project in file(".")).
   aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
       inThisBuild(Seq(
-          git.baseVersion := CommonSettings.settingValues.baseVersion,
-          scalaVersion := CommonSettings.settingValues.scalaVersion
+          scalaVersion := CommonSettings.settingValues.scalaVersion,
+          version := "0.6.7-1"
       )
         ++ CommonSettings.defaultSettings)
   )

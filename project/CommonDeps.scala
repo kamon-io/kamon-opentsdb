@@ -21,7 +21,6 @@ object CommonDeps {
         val enumeratumVersion = "1.5.12"
         val mokitoVersion = "1.10.19"
         val circeVersion = "0.8.0"
-        val kamonopenTSDBVersion = "0.6.7"
         val kamonVersion = "0.6.7"
         val opentsdbVersion = "2.3.0"
         val hbaseVersion = "1.8.0"

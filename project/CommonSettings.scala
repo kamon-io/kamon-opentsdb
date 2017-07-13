@@ -3,10 +3,8 @@ import sbt.Setting
 
 object CommonSettings {
     object settingValues {
-        val baseVersion = "1.0"
 
         val scalaVersion = "2.12.2"
-        val organization = "ru.mfms.mfmd"
         
         //crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2")
 
