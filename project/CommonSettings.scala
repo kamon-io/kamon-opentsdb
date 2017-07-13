@@ -22,7 +22,6 @@ object CommonSettings {
         import sbt.Keys._
         Seq(
             scalacOptions := settingValues.scalacOptions
-            //organization := settingValues.organization
         )
     }
 
