@@ -1,10 +1,10 @@
-import com.typesafe.sbt.SbtGit.git
-
 name := "kamon-opentsdb"
 
 lazy val root = (project in file(".")).
   aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
+      parallelExecution in Test in Global := false,
+
       inThisBuild(Seq(
           scalaVersion := CommonSettings.settingValues.scalaVersion,
           version := "0.6.7-1"
