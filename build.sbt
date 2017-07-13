@@ -3,25 +3,13 @@ import com.typesafe.sbt.SbtGit.git
 name := "kamon-opentsdb"
 
 lazy val root = (project in file(".")).
-  enablePlugins(GitVersioning).
   aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
       inThisBuild(Seq(
           git.baseVersion := CommonSettings.settingValues.baseVersion,
-          scalaVersion := CommonSettings.settingValues.scalaVersion,
-          publishTo := {
-              val corporateRepo = "http://toucan.simplesys.lan/"
-              if (isSnapshot.value)
-                  Some("snapshots" at corporateRepo + "artifactory/libs-snapshot-local")
-              else
-                  Some("releases" at corporateRepo + "artifactory/libs-release-local")
-          },
-          credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+          scalaVersion := CommonSettings.settingValues.scalaVersion
       )
-        ++ CommonSettings.defaultSettings),
-      publishArtifact in(Compile, packageBin) := false,
-      publishArtifact in(Compile, packageDoc) := false,
-      publishArtifact in(Compile, packageSrc) := false
+        ++ CommonSettings.defaultSettings)
   )
 
 lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("common-kamon-open-tsdb-http")).
