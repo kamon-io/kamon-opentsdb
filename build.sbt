@@ -1,41 +1,68 @@
-import sbt.ExclusionRule
-
-/* =========================================================================================
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing permissions
- * and limitations under the License.
- * =========================================================================================
- */
-
-val kamonCore = "io.kamon" %% "kamon-core" % "0.6.7"
-
-val opentsdb = "net.opentsdb" % "opentsdb" % "2.3.0" excludeAll(
-  ExclusionRule(organization = "ch.qos.logback"),
-  ExclusionRule(organization = "com.google.gwt"),
-  ExclusionRule(organization = "net.opentsdb", artifact = "opentsdb_gwt_theme"),
-  ExclusionRule(organization = "org.jgrapht"),
-  ExclusionRule(organization = "ch.qos.logback")
-)
-
-val hbase = "org.hbase" % "asynchbase" % "1.8.0"
+import com.typesafe.sbt.SbtGit.git
 
 name := "kamon-opentsdb"
 
-parallelExecution in Test in Global := false
+lazy val root = (project in file(".")).
+  enablePlugins(GitVersioning).
+  aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
+  settings(
+      inThisBuild(Seq(
+          git.baseVersion := CommonSettings.settingValues.baseVersion,
+          scalaVersion := CommonSettings.settingValues.scalaVersion,
+          publishTo := {
+              val corporateRepo = "http://toucan.simplesys.lan/"
+              if (isSnapshot.value)
+                  Some("snapshots" at corporateRepo + "artifactory/libs-snapshot-local")
+              else
+                  Some("releases" at corporateRepo + "artifactory/libs-release-local")
+          },
+          credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+      )
+        ++ CommonSettings.defaultSettings),
+      publishArtifact in(Compile, packageBin) := false,
+      publishArtifact in(Compile, packageDoc) := false,
+      publishArtifact in(Compile, packageSrc) := false
+  )
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2")
+lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("common-kamon-open-tsdb-http")).
+  settings(
+      libraryDependencies ++= Seq(
+          CommonDeps.logback,
+          CommonDeps.logging,
+          CommonDeps.configTypesafe,
+          CommonDeps.scalaTest % Test
+      )
+  ).settings(CommonSettings.defaultProjectSettings)
 
-libraryDependencies ++=
-  compileScope(kamonCore, slf4jApi, opentsdb, hbase) ++
-    testScope(scalatest, akkaDependency("testkit").value, slf4jApi, slf4jnop,
-        "org.mockito" % "mockito-all" % "1.10.19"
-    )
+lazy val kamonOpenTSDB = Project(id = "kamon-open-tsdb", base = file("kamon-open-tsdb")).
+  dependsOn(common).
+  settings(
+      libraryDependencies ++= Seq(
+          CommonDeps.opentsdb,
+          CommonDeps.kamon,
+          CommonDeps.hbase
+      )
+  ).settings(CommonSettings.defaultProjectSettings)
+
+lazy val kamonOpenTSDB_HTTP = Project(id = "kamon-open-tsdb-http", base = file("kamon-open-tsdb-http")).
+  dependsOn(kamonOpenTSDB).
+  settings(
+      libraryDependencies ++= Seq(
+          CommonDeps.akkaHttp,
+          CommonDeps.circeCore,
+          CommonDeps.circeGeneric,
+          CommonDeps.circeParser,
+          CommonDeps.enumeratum,
+          CommonDeps.scalaTest % Test
+      )
+  ).settings(CommonSettings.defaultProjectSettings)
+
+lazy val test = (project in file("test")).
+  dependsOn(kamonOpenTSDB_HTTP).
+  settings(
+      libraryDependencies ++= Seq(
+          CommonDeps.scalaTest % Test
+      )
+  ).settings(CommonSettings.defaultProjectSettings)
 
 resolvers += Resolver.bintrayRepo("kamon-io", "releases")
