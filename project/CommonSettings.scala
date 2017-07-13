@@ -21,7 +21,7 @@ object CommonSettings {
     val defaultSettings = {
         import sbt.Keys._
         Seq(
-            scalacOptions := settingValues.scalacOptions,
+            scalacOptions := settingValues.scalacOptions
             //organization := settingValues.organization
         )
     }
