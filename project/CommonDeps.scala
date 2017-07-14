@@ -9,6 +9,7 @@ object PluginDeps {
     val sbtNativePackager = addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % versions.sbtNativePackagerVersion)
 }
 
+
 object CommonDeps {
     object versions {
 
