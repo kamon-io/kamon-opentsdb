@@ -1,22 +1,35 @@
+import com.typesafe.sbt.SbtGit.git
+
 name := "kamon-opentsdb"
 
 lazy val root = (project in file(".")).
+  //enablePlugins(GitVersioning).
   aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
-      parallelExecution in Test in Global := false,
-
       inThisBuild(Seq(
-          scalaVersion := CommonSettings.settingValues.scalaVersion,
-          version := "0.6.7-1"
+          //git.baseVersion := "1.0",
+          scalaVersion := "2.12.2",
+          crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6"),
+          /*publishTo := {
+              val corporateRepo = "http://toucan.simplesys.lan/"
+              if (isSnapshot.value)
+                  Some("snapshots" at corporateRepo + "artifactory/libs-snapshot-local")
+              else
+                  Some("releases" at corporateRepo + "artifactory/libs-release-local")
+          },
+          credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")*/
       )
-        ++ CommonSettings.defaultSettings)
+        ++ CommonSettings.defaultSettings),
+      publishArtifact in(Compile, packageBin) := false,
+      publishArtifact in(Compile, packageDoc) := false,
+      publishArtifact in(Compile, packageSrc) := false
   )
 
 lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("common-kamon-open-tsdb-http")).
   settings(
       libraryDependencies ++= Seq(
           CommonDeps.logback,
-          CommonDeps.logging,
+          CommonDeps.logging.value,
           CommonDeps.configTypesafe,
           CommonDeps.scalaTest % Test
       )
@@ -36,7 +49,7 @@ lazy val kamonOpenTSDB_HTTP = Project(id = "kamon-open-tsdb-http", base = file("
   dependsOn(kamonOpenTSDB).
   settings(
       libraryDependencies ++= Seq(
-          CommonDeps.akkaHttp,
+          CommonDeps.akkaHttp.value,
           CommonDeps.circeCore,
           CommonDeps.circeGeneric,
           CommonDeps.circeParser,

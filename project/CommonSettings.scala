@@ -1,12 +1,8 @@
-import sbt.Keys.crossScalaVersions
 import sbt.Setting
 
 object CommonSettings {
     object settingValues {
-
-        val scalaVersion = "2.12.2"
-        
-        //crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2")
+        val organization = "ru.mfms.mfmd"
 
         val scalacOptions = Seq(
             "-feature",
@@ -21,7 +17,8 @@ object CommonSettings {
     val defaultSettings = {
         import sbt.Keys._
         Seq(
-            scalacOptions := settingValues.scalacOptions
+            scalacOptions := settingValues.scalacOptions,
+            organization := settingValues.organization
         )
     }
 
