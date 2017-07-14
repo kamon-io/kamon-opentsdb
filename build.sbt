@@ -9,8 +9,8 @@ lazy val root = (project in file(".")).
       inThisBuild(Seq(
           //git.baseVersion := "1.0",
           scalaVersion := "2.12.2",
-          crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6"),
-          /*publishTo := {
+          crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6")/*,
+          publishTo := {
               val corporateRepo = "http://toucan.simplesys.lan/"
               if (isSnapshot.value)
                   Some("snapshots" at corporateRepo + "artifactory/libs-snapshot-local")
@@ -19,10 +19,10 @@ lazy val root = (project in file(".")).
           },
           credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")*/
       )
-        ++ CommonSettings.defaultSettings),
+        ++ CommonSettings.defaultSettings)/*,
       publishArtifact in(Compile, packageBin) := false,
       publishArtifact in(Compile, packageDoc) := false,
-      publishArtifact in(Compile, packageSrc) := false
+      publishArtifact in(Compile, packageSrc) := false*/
   )
 
 lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("common-kamon-open-tsdb-http")).

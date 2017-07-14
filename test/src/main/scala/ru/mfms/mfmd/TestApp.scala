@@ -1,11 +1,6 @@
 package ru.mfms.mfmd
 
-import com.typesafe.scalalogging.LazyLogging
-import kamon.Kamon
-import ru.mfms.kamon.ConnectorRMIMetrics.connectorRequestCount
-import ru.mfms.kamon.{Config, SysData}
-
-object TestApp extends App with Config with LazyLogging {
+/*object TestApp extends App with Config with LazyLogging {
     Kamon.start()
 
     //(0 to 5).foreach(item ⇒
@@ -24,4 +19,4 @@ object TestApp extends App with Config with LazyLogging {
             logger info s"system terminated"
     }
 
-}
+}*/

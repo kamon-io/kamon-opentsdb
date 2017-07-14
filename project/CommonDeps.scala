@@ -29,10 +29,11 @@ object CommonDeps {
         val opentsdbVersion = "2.3.0"
         val hbaseVersion = "1.8.0"
     }
-
+    
     val akkaHttp = Def.setting(DepsHelper.moduleId(scalaVersion.value, "com.typesafe.akka" %% "akka-http" % versions.akkaHttpVersion, "com.typesafe.akka" %% "akka-http-experimental" % versions.akkaHttp210Version))
 
     val logging = Def.setting(DepsHelper.moduleId(scalaVersion.value, "com.typesafe.scala-logging" %% "scala-logging" % versions.loggingVersion, "com.typesafe.scala-logging" %% "scala-logging-slf4j" % versions.logging211Version))
+
     val logback = "ch.qos.logback" % "logback-classic" % versions.logbackVersion
     val configTypesafe = "com.typesafe" % "config" % versions.configTypesafeVersion
 
