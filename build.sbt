@@ -1,28 +1,14 @@
-import com.typesafe.sbt.SbtGit.git
+import sbt.Keys.scalaVersion
 
 name := "kamon-opentsdb"
 
 lazy val root = (project in file(".")).
-  //enablePlugins(GitVersioning).
   aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
       inThisBuild(Seq(
-          //git.baseVersion := "1.0",
-          scalaVersion := "2.12.2",
-          crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6")/*,
-          publishTo := {
-              val corporateRepo = "http://toucan.simplesys.lan/"
-              if (isSnapshot.value)
-                  Some("snapshots" at corporateRepo + "artifactory/libs-snapshot-local")
-              else
-                  Some("releases" at corporateRepo + "artifactory/libs-release-local")
-          },
-          credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")*/
-      )
-        ++ CommonSettings.defaultSettings)/*,
-      publishArtifact in(Compile, packageBin) := false,
-      publishArtifact in(Compile, packageDoc) := false,
-      publishArtifact in(Compile, packageSrc) := false*/
+          crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6"),
+          scalaVersion := crossScalaVersions.value.head
+      ))
   )
 
 lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("common-kamon-open-tsdb-http")).
@@ -33,7 +19,7 @@ lazy val common = Project(id = "common-kamon-open-tsdb-http", base = file("commo
           CommonDeps.configTypesafe,
           CommonDeps.scalaTest % Test
       )
-  ).settings(CommonSettings.defaultProjectSettings)
+  )
 
 lazy val kamonOpenTSDB = Project(id = "kamon-open-tsdb", base = file("kamon-open-tsdb")).
   dependsOn(common).
@@ -43,7 +29,7 @@ lazy val kamonOpenTSDB = Project(id = "kamon-open-tsdb", base = file("kamon-open
           CommonDeps.kamon,
           CommonDeps.hbase
       )
-  ).settings(CommonSettings.defaultProjectSettings)
+  )
 
 lazy val kamonOpenTSDB_HTTP = Project(id = "kamon-open-tsdb-http", base = file("kamon-open-tsdb-http")).
   dependsOn(kamonOpenTSDB).
@@ -56,7 +42,7 @@ lazy val kamonOpenTSDB_HTTP = Project(id = "kamon-open-tsdb-http", base = file("
           CommonDeps.enumeratum,
           CommonDeps.scalaTest % Test
       )
-  ).settings(CommonSettings.defaultProjectSettings)
+  )
 
 lazy val test = (project in file("test")).
   dependsOn(kamonOpenTSDB_HTTP).
@@ -64,6 +50,6 @@ lazy val test = (project in file("test")).
       libraryDependencies ++= Seq(
           CommonDeps.scalaTest % Test
       )
-  ).settings(CommonSettings.defaultProjectSettings)
+  )
 
 resolvers += Resolver.bintrayRepo("kamon-io", "releases")

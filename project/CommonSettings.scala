@@ -2,8 +2,6 @@ import sbt.Setting
 
 object CommonSettings {
     object settingValues {
-        val organization = "ru.mfms.mfmd"
-
         val scalacOptions = Seq(
             "-feature",
             "-language:higherKinds",
@@ -12,13 +10,5 @@ object CommonSettings {
             "-language:postfixOps",
             "-deprecation",
             "-unchecked")
-    }
-
-    val defaultSettings = {
-        import sbt.Keys._
-        Seq(
-            scalacOptions := settingValues.scalacOptions,
-            organization := settingValues.organization
-        )
     }
 }

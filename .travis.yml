@@ -3,8 +3,12 @@ script:
   - sbt +test
 scala:
    - 2.12.2
+   - 2.11.1
+   - 2.10.6
 jdk:
    - oraclejdk8
+   - oraclejdk7
+   - oraclejdk6
 before_script:
   - mkdir $TRAVIS_BUILD_DIR/tmp
   - export SBT_OPTS="-Djava.io.tmpdir=$TRAVIS_BUILD_DIR/tmp"
