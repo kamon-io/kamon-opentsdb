@@ -55,3 +55,5 @@ server.pid
 
 # Default sigar library provision location.
 native/
+project/publish.sbt
+*.log
