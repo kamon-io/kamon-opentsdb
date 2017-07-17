@@ -3,7 +3,7 @@ import sbt.Keys.scalaVersion
 name := "kamon-opentsdb"
 
 lazy val root = (project in file(".")).
-  aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common).
+  aggregate(kamonOpenTSDB, kamonOpenTSDB_HTTP, common, test).
   settings(
       inThisBuild(Seq(
           crossScalaVersions := Seq("2.12.2", "2.11.8", "2.10.6"),
@@ -40,6 +40,14 @@ lazy val kamonOpenTSDB_HTTP = Project(id = "kamon-open-tsdb-http", base = file("
           CommonDeps.circeGeneric,
           CommonDeps.circeParser,
           CommonDeps.enumeratum,
+          CommonDeps.scalaTest % Test
+      )
+  )
+
+lazy val test = (project in file("test")).
+  dependsOn(kamonOpenTSDB_HTTP).
+  settings(
+      libraryDependencies ++= Seq(
           CommonDeps.scalaTest % Test
       )
   )
